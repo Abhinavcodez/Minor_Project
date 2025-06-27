@@ -19,6 +19,7 @@
         "imagenet",
         "imread",
         "imwrite",
+        "iscrowd",
         "Jalebi",
         "jamun",
         "kheera",
@@ -31,6 +32,7 @@
         "Raita",
         "Rajma",
         "Roti",
+        "sala",
         "shimla",
         "Unet",
         "yolov"
