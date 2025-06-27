@@ -1,0 +1,8 @@
+path: yolo_dataset
+train: images/train
+val: images/val
+names:
+  0: rice
+  1: curry
+  2: curd
+  3: salad
