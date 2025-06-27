@@ -32,18 +32,23 @@ class FoodSegDataset(Dataset):
             print(f"[WARNING] Missing or unreadable file: {image_name}")
             return self.__getitem__((idx + 1) % len(self.image_list))
 
-        # Ensure class index range is valid
+        if image.shape[:2] != mask.shape[:2]:
+            print(f"[ERROR] Shape mismatch in {image_name}: {image.shape[:2]} vs {mask.shape[:2]}")
+            return self.__getitem__((idx + 1) % len(self.image_list))
+
+    # Fix invalid values
         if mask.max() >= self.num_classes:
-            print(f"[WARNING] Mask in '{image_name}' has invalid class index: {mask.max()}")
+            print(f"[WARNING] High class index ({mask.max()}) in: {image_name} -> clipped")
+            mask[mask == 255] = 0
             mask = np.clip(mask, 0, self.num_classes - 1)
 
         augmented = self.transform(image=image, mask=mask)
-
         if augmented["image"] is None or augmented["mask"] is None:
             print(f"[ERROR] Augmentation failed for: {image_name}")
             return self.__getitem__((idx + 1) % len(self.image_list))
 
         return augmented["image"], augmented["mask"].long()
+
 
 # --- Paths ---
 train_img_path = "augmented/images/train"
@@ -60,7 +65,7 @@ train_transform = Compose([
     Resize(256, 256),
     Normalize(mean=(0.5,), std=(0.5,)),
     ToTensorV2()
-])
+], is_check_shapes=False)
 
 # --- Dataset & Loader ---
 train_dataset = FoodSegDataset(train_img_path, train_mask_path, transform=train_transform, num_classes=NUM_CLASSES)
