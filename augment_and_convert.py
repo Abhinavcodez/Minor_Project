@@ -26,6 +26,15 @@ transform = Compose([
     MotionBlur(blur_limit=3, p=0.5),
     HorizontalFlip(p=0.5)
 ])
+# Additional augmentations
+transform = Compose([
+    HorizontalFlip(p=0.5),
+    RandomRotate90(p=0.5),
+    cv2.ColorJitter(p=0.3),
+    cv2.GaussianBlur(p=0.2),
+    RandomBrightnessContrast(p=0.4),
+    cv2.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.05, rotate_limit=15, p=0.5)
+])
 
 # Process images
 for img_name in tqdm(os.listdir(IMG_DIR)):
