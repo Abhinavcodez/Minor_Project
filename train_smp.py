@@ -73,7 +73,7 @@ train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 # --- Model ---
 model = smp.Unet(
-    encoder_name="resnet34",        # or "efficientnet-b0"
+    encoder_name="resnet50",        # or "efficientnet-b0"
     encoder_weights="imagenet",     # pretrained encoder
     in_channels=3,
     classes=NUM_CLASSES
